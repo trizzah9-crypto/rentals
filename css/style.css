@@ -69,9 +69,9 @@
 
 .gradient-1 {
   background: #f0a907;
-  background: -moz-linear-gradient(top, #f0a907 0%, #f53c79 100%);
-  background: -webkit-linear-gradient(top, #f0a907 0%, #f53c79 100%);
-  background: linear-gradient(to bottom, #f0a907 0%, #f53c79 100%) !important;
+  background: -moz-linear-gradient(top, #f0a907 0%, #480ceb 100%);
+  background: -webkit-linear-gradient(top, #f0a907 0%, #480ceb 100%);
+  background: linear-gradient(to bottom, #f0a907 0%, #480ceb 100%) !important;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0a907', endColorstr='#f53c79',GradientType=0 ); }
 
 .gradient-2 {
@@ -210,7 +210,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
-  --blue: #5e72e4;
+  --blue: #00eb5a;
   --indigo: #6610f2;
   --purple: #6f42c1;
   --pink: #e83e8c;
