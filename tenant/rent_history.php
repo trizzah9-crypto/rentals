@@ -30,7 +30,7 @@ SELECT p.amount,
 FROM payments p
 INNER JOIN tenancies t ON p.tenancy_id = t.id
 WHERE t.tenant_id=?
-ORDER BY p.payment_date DESC
+ORDER BY p.payment_date DESC, p.id DESC
 ";
 
 $stmt = $conn->prepare($sql);
@@ -168,6 +168,8 @@ body{font-family:'Segoe UI',sans-serif;background:#f4f7fb;color:#2d3748;}
                 <?= ucfirst($row['status']) ?>
             </span>
         </td>
+
+        
     </tr>
     <?php endwhile; ?>
 <?php else: ?>

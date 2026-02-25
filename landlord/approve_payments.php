@@ -68,18 +68,6 @@ $result = $conn->query($sql);
                                                 </tr>
                                                  <?php endwhile; ?>
                                                  </tbody>
-                                    <tfoot>
-                                        <tr>
-                                           <th>Tenant</th>
-                                            <th>House</th>
-                                            <th>Amount (KES)</th>
-                                            <th>Month</th>
-                                            <th>Method</th>
-                                            <th>Reference</th>
-                                            <th>Payment Date</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </tfoot>
                                     
                                 </table>
                             </div>

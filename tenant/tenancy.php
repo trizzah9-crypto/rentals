@@ -74,18 +74,17 @@ body{background:#f4f6fa;color:#2d3748;}
 
 /* Sidebar */
 .sidebar{
-    width:250px;background:#1e293b;color:#fff;padding:30px 20px;display:flex;flex-direction:column;
+    width:230px;background:#1e293b;color:#fff;padding:25px 20px;
 }
-.sidebar h2{margin-bottom:40px;font-size:22px;color:#fff;}
+.sidebar h2{margin-bottom:30px;font-size:20px;}
 .sidebar a{
-    display:block;color:#cbd5e1;text-decoration:none;padding:12px 16px;border-radius:8px;margin-bottom:10px;transition:0.2s;
+    display:block;color:#cbd5e1;text-decoration:none;padding:10px 12px;border-radius:6px;margin-bottom:8px;transition:0.2s;
 }
 .sidebar a:hover{background:#334155;color:#fff;}
 .sidebar .active{background:#2563eb;color:#fff;}
 .sidebar button{
-    margin-top:auto;padding:12px 0;background:#dc2626;color:#fff;border:none;border-radius:6px;cursor:pointer;
+    width:100%;margin-top:15px;padding:10px 15px;background:#dc3545;color:#fff;border:none;border-radius:6px;cursor:pointer;
 }
-
 /* Main content */
 .main{flex:1;padding:35px;overflow:auto;}
 .main h2{font-size:28px;margin-bottom:25px;color:#111827;}
@@ -196,18 +195,60 @@ body{background:#f4f6fa;color:#2d3748;}
 </div>
 
 <script>
-// Optional: animated counters
-document.querySelectorAll('.metric p').forEach(el=>{
-    let end = parseInt(el.innerText.replace(/[^0-9]/g,''));
-    let start = 0;
-    let increment = Math.ceil(end/100);
-    let counter = setInterval(()=>{
-        start+=increment;
-        if(start>=end){start=end;clearInterval(counter);}
-        el.innerText = 'KES '+start.toLocaleString();
-    },10);
+
+/*
+|--------------------------------------------------------------------------
+| Accurate Animated Counter (KES Safe + Decimal Safe)
+|--------------------------------------------------------------------------
+| - Handles commas
+| - Handles decimals
+| - Smooth animation
+| - No wrong figures
+*/
+
+document.querySelectorAll('.metric p').forEach(el => {
+
+    // Get original text
+    let rawText = el.innerText;
+
+    // Remove currency and commas ONLY
+    let cleanNumber = rawText
+        .replace('KES', '')
+        .replace(/,/g, '')
+        .trim();
+
+    let endValue = parseFloat(cleanNumber);
+
+    if (isNaN(endValue)) return;
+
+    let duration = 1200; // 1.2 seconds
+    let startTime = null;
+
+    function animate(currentTime) {
+
+        if (!startTime) startTime = currentTime;
+
+        let progress = Math.min((currentTime - startTime) / duration, 1);
+
+        // Smooth ease-out
+        let eased = 1 - Math.pow(1 - progress, 3);
+
+        let currentValue = eased * endValue;
+
+        el.innerText = "KES " + currentValue.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+
+    requestAnimationFrame(animate);
 });
+
 </script>
 
 </body>
-</html>
+</html>  

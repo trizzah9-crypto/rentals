@@ -51,7 +51,11 @@ function recalculate_rent_balance($conn, $tenancy_id, $for_month = null) {
     }
 
     $balance = ($rent_amount + $penalty) - $total_paid;
-    if ($balance < 0) $balance = 0;
+    $credit = 0;
+        if ($balance < 0) {
+            $credit = abs($balance);
+            $balance = 0;
+        }
 
     // Update tenancy table
     $stmt = $conn->prepare("
@@ -64,11 +68,12 @@ function recalculate_rent_balance($conn, $tenancy_id, $for_month = null) {
     $stmt->close();
 
     return [
-        'balance' => $balance,
-        'penalty' => $penalty,
-        'days_late' => $days_late,
-        'rent_amount' => $rent_amount,
-        'total_paid' => $total_paid
-    ];
+    'balance' => $balance,
+    'penalty' => $penalty,
+    'days_late' => $days_late,
+    'rent_amount' => $rent_amount,
+    'total_paid' => $total_paid,
+    'credit' => $credit
+   ];
 }
 ?>

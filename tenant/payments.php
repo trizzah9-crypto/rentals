@@ -46,7 +46,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     $reference = $_POST['reference'] ?? '';
     $payment_month = date("Y-m");
 
-    if($amount <=0 || empty($payment_method) || empty($reference)){
+    if($amount <=0 || empty($payment_method)){
         $message = "All fields are required and amount must be greater than 0.";
     } else {
         $stmt = $conn->prepare("
@@ -138,7 +138,7 @@ button[type=submit]:hover{background:#1d4ed8;}
 
     <form method="POST" action="">
         <label>Amount (KES)</label>
-        <input type="number" name="amount" step="0.01" max="<?= $rent_balance ?>" value="<?= $rent_balance ?>" required>
+        <input type="number" name="amount" step="0.01" min="1" placeholder="Enter amount" required>
 
         <label>Payment Method</label>
         <select name="payment_method" required>
@@ -149,12 +149,12 @@ button[type=submit]:hover{background:#1d4ed8;}
         </select>
 
         <label>Reference</label>
-        <input type="text" name="reference" placeholder="Enter transaction reference" required>
+        <input type="text" name="reference" placeholder="Enter transaction reference">
 
         <button type="submit">Submit Payment</button>
     </form>
 
-    <p style="margin-top:15px;"><a href="dashboard.php">← Back to Dashboard</a></p>
+
 </div>
 
 </div>
