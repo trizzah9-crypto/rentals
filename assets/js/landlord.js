@@ -63,49 +63,6 @@ document.getElementById("addTenantForm").addEventListener("submit", function(e){
 
 
 
-// MOVE IN (unchanged)
-document.getElementById("moveInForm").addEventListener("submit", function(e){
-    e.preventDefault();
-
-    const houseId = document.getElementById("movein_select_house").value;
-    const tenantId = document.getElementById("movein_select_tenant").value;
-    const moveInDate = document.getElementById("movein_date").value;
-    const depositPaid = parseFloat(document.getElementById("deposit_paid").value || 0);
-    const firstRentPaidRadio = document.querySelector('input[name="first_rent_paid"]:checked');
-    const firstRentPaid = firstRentPaidRadio ? firstRentPaidRadio.value : null;
-    
-    if(!firstRentPaid){
-        alert("Please select if first rent is paid");
-        return;
-    }
-    const paymentMethod = document.getElementById("payment_method").value;
-
-    fetch("../api/tenancies/move_in.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            house_id: houseId,
-            tenant_id: tenantId,
-            move_in_date: moveInDate,
-            deposit_paid: depositPaid,
-            first_rent_paid: firstRentPaid,
-            payment_method: paymentMethod
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        const msgDiv = document.getElementById("moveInMessage");
-
-        if(data.status === "success"){
-            msgDiv.innerHTML = `<span style="color:green">${data.message}</span>`;
-            document.getElementById("moveInForm").reset();
-        } else {
-            msgDiv.innerHTML = `<span style="color:red">${data.message}</span>`;
-        }
-    })
-    .catch(err => console.error("AJAX error:", err));
-});
-
 
 // MOVE OUT (unchanged)
 document.getElementById("moveOutForm").addEventListener("submit", function(e){

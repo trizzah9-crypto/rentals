@@ -156,90 +156,98 @@ require("headd.php");
                                 </div>
                                 <div class="card-body">
                                     <div class="basic-form">
-                                        <form id="moveInForm">
-                        
-                                            <!-- Select House + Tenant -->
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label>Select House</label>
-                                                    <select id="movein_select_house" class="form-control" required>
-                                                        <option value="">Select House</option>
-                                                        <?php
-                                                        $houses = $conn->query("SELECT id, house_number FROM houses WHERE landlord_id=".$_SESSION['user_id']." AND status='vacant'");
-                                                        while($row = $houses->fetch_assoc()){
-                                                            echo "<option value='{$row['id']}'>{$row['house_number']}</option>";
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                        
-                                              <div class="form-group col-md-6">
-                                                           <label>Select Tenant</label>
-                                                           <select id="movein_select_tenant" class="form-control" required>
-                                                               <option value="">Select Tenant</option>
-                                                               <?php
-                                                               $tenants = $conn->query("
-                                                                   SELECT t.id, u.name
-                                                                   FROM tenants t
-                                                                   JOIN users u ON t.user_id = u.id
-                                                                   WHERE t.id NOT IN (
-                                                                       SELECT tenant_id FROM tenancies
-                                                                   )
-                                                               ");
+                                      <!-- MOVE IN (HTML snippet) -->
+<form id="moveInForm">
 
-                                                               while ($t = $tenants->fetch_assoc()) {
-                                                                   echo "<option value='{$t['id']}'>{$t['name']}</option>";
-                                                               }
-                                                               ?>
-                                                           </select>
-                                                     </div>
-                                                      </div>
+    <!-- Select House + Tenant -->
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Select House</label>
+            <select id="movein_select_house" class="form-control" required>
+                <option value="">Select House</option>
+                <?php
+                $houses = $conn->query("SELECT id, house_number FROM houses WHERE landlord_id=".$_SESSION['user_id']." AND status='vacant'");
+                while($row = $houses->fetch_assoc()){
+                    echo "<option value='{$row['id']}'>{$row['house_number']}</option>";
+                }
+                ?>
+            </select>
+        </div>
 
-                        
-                                            <!-- Rent + Move-in Date -->
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label>Rent Amount</label>
-                                                    <input  type="number"  id="movein_rent_amount"  class="form-control"  readonly>
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label>Move-In Date</label>
-                                                    <input type="date" id="movein_date" class="form-control" required>
-                                                </div>
-                                            </div>
-                        
-                                            <!-- Deposit + First Rent + Payment Method -->
-                                            <div class="form-row">
-                                                <div class="form-group col-md-4">
-                                                    <label>Deposit Amount Paid</label>
-                                                    <input type="number" id="deposit_paid" class="form-control" value="0" min="0">
-                                                </div>
-                        
-                                                <div class="form-group col-md-4">
-                                                   <div>
-                                                          <label>First Rent Paid?</label><br>
-                                                          <label>
-                                                            <input type="radio" name="first_rent_paid" value="yes" required> Yes
-                                                          </label>
-                                                          <label style="margin-left:15px;">
-                                                            <input type="radio" name="first_rent_paid" value="no"> No
-                                                          </label>
-                                                        </div>
-                                                        </div>
-                        
-                                                <div class="form-group col-md-4">
-                                                    <label>Payment Method</label>
-                                                    <select id="payment_method" class="form-control" required>
-                                                        <option value="cash">Cash</option>
-                                                        <option value="mpesa">M-Pesa</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                        
-                                            <button type="submit" class="btn btn-info">Move In Tenant</button>
-                                        </form>
-                        
-                                        <div id="moveInMessage" class="mt-3"></div>
+        <div class="form-group col-md-6">
+            <label>Select Tenant</label>
+            <select id="movein_select_tenant" class="form-control" required>
+                <option value="">Select Tenant</option>
+                <?php
+                $tenants = $conn->query("
+                    SELECT t.id, u.name
+                    FROM tenants t
+                    JOIN users u ON t.user_id = u.id
+                    WHERE t.id NOT IN (
+                        SELECT tenant_id FROM tenancies
+                    )
+                ");
+
+                while ($t = $tenants->fetch_assoc()) {
+                    echo "<option value='{$t['id']}'>{$t['name']}</option>";
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+
+    <!-- Rent + Move-in Date -->
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Rent Amount (monthly)</label>
+            <input type="number" id="movein_rent_amount" class="form-control" readonly>
+        </div>
+        <div class="form-group col-md-6">
+            <label>Move-In Date</label>
+            <input type="date" id="movein_date" class="form-control" required>
+        </div>
+    </div>
+
+    <!-- PRORATE DISPLAY (readonly) -->
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Prorated Amount (readonly)</label>
+            <input type="number" step="0.01" id="prorate_amount" class="form-control" readonly>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label>Amount Paid (by tenant now)</label>
+            <input type="number" step="0.01" id="amount_paid" class="form-control" value="0" min="0">
+        </div>
+    </div>
+
+   
+
+    <!-- Deposit + Payment Method -->
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label>Deposit Amount Paid</label>
+            <input type="number" id="deposit_paid" class="form-control" value="0" min="0">
+        </div>
+
+        <div class="form-group col-md-4">
+            <label>Payment Method</label>
+            <select id="payment_method" class="form-control" required>
+                <option value="cash">Cash</option>
+                <option value="mpesa">M-Pesa</option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label>Rent Balance Preview</label>
+            <div id="rentBalancePreview" class="form-control" style="height:auto;background:#f8f9fa;"></div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-info">Move In Tenant</button>
+</form>
+
+<div id="moveInMessage" class="mt-3"></div>
                                     </div>
                                 </div>
                             </div>
@@ -321,13 +329,18 @@ document.getElementById("addTenantForm").addEventListener("submit", function(e){
 </script>
 
 <script>
+// --- helper: fetch rent for house (keeps your existing behavior) ---
 document.getElementById("movein_select_house").addEventListener("change", function () {
     const houseId = this.value;
     const rentInput = document.getElementById("movein_rent_amount");
+    const prorateInput = document.getElementById("prorate_amount");
+    const amountPaidInput = document.getElementById("amount_paid");
 
     if (!houseId) {
         rentInput.value = "";
         rentInput.readOnly = false;
+        prorateInput.value = "";
+        updateBalancePreview();
         return;
     }
 
@@ -343,7 +356,143 @@ document.getElementById("movein_select_house").addEventListener("change", functi
                 alert(data.message);
             }
         })
-        .catch(err => console.error(err));
+        .catch(err => console.error(err))
+        .finally(() => {
+            // update prorate whenever house changes and date is present
+            calculateProrate();
+        });
+});
+
+// Calculate prorated amount and populate readonly field + preview
+function calculateProrate() {
+    const houseId = document.getElementById("movein_select_house").value;
+    const moveDate = document.getElementById("movein_date").value;
+    const prorateInput = document.getElementById("prorate_amount");
+    const preview = document.getElementById("rentBalancePreview");
+
+    if (!houseId || !moveDate) {
+        prorateInput.value = "";
+        preview.innerHTML = "";
+        return;
+    }
+
+    fetch(`../api/tenancies/calc_prorate.php?house_id=${houseId}&move_in_date=${encodeURIComponent(moveDate)}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.status !== "success") {
+                prorateInput.value = "";
+                preview.innerHTML = `<span style="color:red">${data.message || 'Calculation error'}</span>`;
+                return;
+            }
+
+            // set prorated amount
+            const amt = (typeof data.amount !== 'undefined') ? parseFloat(data.amount) : parseFloat(data.full_rent || data.rent || 0);
+            prorateInput.value = amt.toFixed(2);
+
+            // update preview
+            if (data.type === "full") {
+                preview.innerHTML = `<strong>Full month charge:</strong> KES ${amt.toFixed(2)}`;
+                preview.style.color = "#155724"; // green
+            } else {
+                preview.innerHTML = `
+                    <strong>Prorated</strong><br>
+                    Full Rent: KES ${data.full_rent}<br>
+                    Days in Period: ${data.period_days}<br>
+                    Days owed: ${data.days_owed}<br>
+                    <hr>
+                    <strong>Amount to charge now: KES ${amt.toFixed(2)}</strong>
+                `;
+                preview.style.color = "#856404"; // amber
+            }
+
+            // also update balance preview using any amount already typed
+            updateBalancePreview();
+        })
+        .catch(err => {
+            console.error(err);
+        });
+}
+
+function updateBalancePreview() {
+    const prorateVal = parseFloat(document.getElementById("prorate_amount").value || 0);
+    const paidVal = parseFloat(document.getElementById("amount_paid").value || 0);
+    const preview = document.getElementById("rentBalancePreview");
+
+    if (isNaN(prorateVal)) { preview.innerHTML = ''; return; }
+
+    const remaining = +(prorateVal - paidVal).toFixed(2); // positive = tenant owes; negative = landlord owes (credit)
+
+    if (remaining > 0) {
+        preview.innerHTML = `<strong>Tenant still owes:</strong> KES ${remaining.toFixed(2)}`;
+        preview.style.background = "#fff3cd";
+    } else if (remaining === 0) {
+        preview.innerHTML = `<strong>No balance:</strong> KES 0.00 — settled for this period`;
+        preview.style.background = "#d4edda";
+    } else {
+        preview.innerHTML = `<strong>Landlord owes tenant (credit):</strong> KES ${Math.abs(remaining).toFixed(2)}`;
+        preview.style.background = "#cce5ff";
+    }
+}
+
+// wire up listeners
+document.getElementById("movein_date").addEventListener("change", calculateProrate);
+document.getElementById("amount_paid").addEventListener("input", updateBalancePreview);
+document.getElementById("prorate_amount").addEventListener("change", updateBalancePreview);
+
+// MOVE IN form submit
+document.getElementById("moveInForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const houseId = document.getElementById("movein_select_house").value;
+    const tenantId = document.getElementById("movein_select_tenant").value;
+    const moveInDate = document.getElementById("movein_date").value;
+    const depositPaid = parseFloat(document.getElementById("deposit_paid").value || 0);
+    const amountPaid = parseFloat(document.getElementById("amount_paid").value || 0);
+    const paymentMethod = document.getElementById("payment_method").value;
+    const prorateAmount = parseFloat(document.getElementById("prorate_amount").value || 0);
+
+    if (!houseId || !tenantId || !moveInDate) {
+        alert("Please select house, tenant and move-in date.");
+        return;
+    }
+
+    // Optional extra check: ensure amountPaid is not negative
+    if (amountPaid < 0 || depositPaid < 0) {
+        alert("Amounts cannot be negative");
+        return;
+    }
+
+    fetch("../api/tenancies/move_in.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            house_id: houseId,
+            tenant_id: tenantId,
+            move_in_date: moveInDate,
+            deposit_paid: depositPaid,
+            amount_paid: amountPaid,
+            prorate_amount: prorateAmount,
+            payment_method: paymentMethod
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        const msgDiv = document.getElementById("moveInMessage");
+        if (data.status === "success") {
+            msgDiv.innerHTML = `<span style="color:green">${data.message}</span>
+                                <div>Prorated charged: KES ${data.prorate_amount}</div>
+                                <div>Rent balance stored: KES ${data.rent_balance}</div>`;
+            document.getElementById("moveInForm").reset();
+            document.getElementById("prorate_amount").value = "";
+            document.getElementById("rentBalancePreview").innerHTML = "";
+            // optionally refresh house/tenant selects (you can add code to reload lists)
+        } else {
+            msgDiv.innerHTML = `<span style="color:red">${data.message}</span>`;
+        }
+    })
+    .catch(err => {
+        console.error("AJAX error:", err);
+    });
 });
 </script>
 
