@@ -128,6 +128,10 @@ require("headd.php");
                     <option value="occupied">Occupied</option>
                 </select>
             </div>
+             <div class="mb-3">
+                <label>Unit price for water</label>
+                <input type="number" id="edit_unit_price" name="unit_price" class="form-control" required>
+            </div>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-success">Update</button>
@@ -144,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.edit-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const id = btn.dataset.id;
-            fetch(`get_house.php?id=${id}`)
+            fetch(`ajax/get_house.php?id=${id}`)
                 .then(res => res.json())
                 .then(data => {
                     if(data.status === 'success'){
@@ -153,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.getElementById('edit_location').value = data.house.location;
                         document.getElementById('edit_rent').value = data.house.rent_amount;
                         document.getElementById('edit_status').value = data.house.status;
+                        document.getElementById('edit_unit_price').value = data.house.unit_price_water;
                         new bootstrap.Modal(document.getElementById('editHouseModal')).show();
                     } else {
                         alert(data.message);
@@ -165,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('editHouseForm').addEventListener('submit', e => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        fetch('update_house.php', {
+        fetch('ajax/update_house.php', {
             method: 'POST',
             body: formData
         })

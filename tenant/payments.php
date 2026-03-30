@@ -121,6 +121,7 @@ button[type=submit]:hover{background:#1d4ed8;}
     <a href="payments.php" class="active">Make Payment</a>
     <a href="rent_history.php">Rent History</a>
     <a href="tenancy.php">My Tenancy</a>
+    <a href="calendar.php">My Calendar</a>
     <form method="POST" action="logout.php">
         <button class="btn-danger" style="margin-top:15px;width:100%;">Logout</button>
     </form>

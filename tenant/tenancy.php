@@ -134,6 +134,7 @@ body{background:#f4f6fa;color:#2d3748;}
     <a href="payments.php">Make Payment</a>
     <a href="rent_history.php">Rent History</a>
     <a href="tenancy.php" class="active">My Tenancy</a>
+    <a href="calendar.php">My Calendar</a>
     <form method="POST" action="logout.php">
         <button>Logout</button>
     </form>

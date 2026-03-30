@@ -13,29 +13,37 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'landlord') {
 }
 
 $house_id = $_GET['house_id'] ?? null;
-if (!$house_id) {
+
+if(!$house_id){
     echo json_encode(["status"=>"error","message"=>"Missing house id"]);
     exit;
 }
 
 $stmt = $conn->prepare("
-     SELECT t.id, u.name, h.house_number
-      FROM tenancies t
-      JOIN tenants te ON t.tenant_id=te.id
-      JOIN users u ON te.user_id=u.id
-      JOIN houses h ON t.house_id=h.id
-      WHERE t.status='active'
+SELECT u.name
+FROM tenancies t
+JOIN tenants te ON t.tenant_id = te.id
+JOIN users u ON te.user_id = u.id
+WHERE t.house_id = ?
+AND t.status = 'active'
+LIMIT 1
 ");
-$stmt->bind_param("iisi", $tenant_id, $user_name, $house_id, $_SESSION['user_id']);
-$stmt->execute();
-$data = $stmt->get_result()->fetch_assoc();
 
-if (!$house) {
-    echo json_encode(["status"=>"error","message"=>"House not found"]);
+$stmt->bind_param("i", $house_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if($result->num_rows == 0){
+    echo json_encode([
+        "status"=>"error",
+        "message"=>"Tenancy not found"
+    ]);
     exit;
 }
 
+$row = $result->fetch_assoc();
+
 echo json_encode([
-    "status" => "success",
-    "user_name" => $data['username']
+    "status"=>"success",
+    "username"=>$row['name']
 ]);

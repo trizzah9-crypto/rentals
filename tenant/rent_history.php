@@ -135,6 +135,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f4f7fb;color:#2d3748;}
     <a href="payments.php">Make Payment</a>
     <a href="rent_history.php" class="active">Rent History</a>
     <a href="tenancy.php">My Tenancy</a>
+    <a href="calendar.php">My Calendar</a>
 
     <form method="POST" action="logout.php">
         <button class="btn-danger" style="margin-top:15px;width:100%;">Logout</button>

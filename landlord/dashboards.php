@@ -38,13 +38,14 @@ require("headd.php");
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label style="color: #333333;">Rent Amount</label>
-                                    <input type="number" id="rent_amount" class="form-control" required>
-                                </div>
-
                                 <div class="form-row">
-                                        <div class="form-group col-md-6">
+                                    <div class="form-group col-md-6">
+                                        <label style="color: #333333;">Rent Amount</label>
+                                        <input type="number" id="rent_amount" class="form-control" required>
+                                
+                                    </div>
+
+                                     <div class="form-group col-md-6">
                                             <label>Rent Due Day (1 – 28)</label>
                                             <input 
                                                 type="number" 
@@ -55,6 +56,11 @@ require("headd.php");
                                                 required
                                             >
                                         </div>
+                                </div>
+                                
+
+                                <div class="form-row">
+                                       
                                     
                                         <div class="form-group col-md-6">
                                             <label>Late Interest Per Day (KES)</label>
@@ -65,6 +71,12 @@ require("headd.php");
                                                 value="0" 
                                                 required
                                             >
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label>Unit Price for Water</label>
+                                            <input type="number" id="price_water" class="form-control" required>
+
                                         </div>
                                     </div>
                                     

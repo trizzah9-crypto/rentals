@@ -98,23 +98,25 @@ try {
     // INSERT TENANCY (FIXED HERE)
     // ==============================
 
-    $stmt = $conn->prepare("
+        $stmt = $conn->prepare("
         INSERT INTO tenancies
-        (tenant_id, house_id, rent_amount, move_in_date, status, deposit, rent_balance, last_rent_calculated_date)
-        VALUES (?, ?, ?, ?, 'active', ?, ?, ?)
-    ");
-
-    $stmt->bind_param(
-        "iidsdds",
+        (tenant_id, house_id, rent_amount, move_in_date, status, deposit, rent_balance, last_rent_calculated_date, first_cycle_rent)
+        VALUES (?, ?, ?, ?, 'active', ?, ?, ?, ?)
+        ");
+        
+        $stmt->bind_param(
+        "iidsddsd",
         $tenant_id,
         $house_id,
         $rent_amount,
         $move_in_date,
         $deposit,
         $rent_balance,
-        $last_rent_calc_date   // ✅ FIXED
-    );
+        $last_rent_calc_date,
+        $prorated_amount
+        );
 
+        
     $stmt->execute();
     $tenancy_id = $stmt->insert_id;
 

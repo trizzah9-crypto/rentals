@@ -122,51 +122,53 @@ require "headd.php";
 <script>
     // SUBMIT  READINGS
 document.getElementById("readings").addEventListener("submit", function(e){
+
     e.preventDefault();
-         const houseId = document.getElementById("house") . value;
-         const previous = parsefloat(document.getElementById("prev") . value || 0);
-         const tenantId = document.getElementById("tenant") . value;
-         const current = parseFloat(document.getElementById("curr") . value || 0);
 
-         if  (!houseId || !current || !tenantId){
-            alert("House, Tenant and current reading cannot be empty.");
-         return; }
+    const houseId = document.getElementById("house").value;
+    const previous = parseFloat(document.getElementById("prev").value || 0);
+    const current = parseFloat(document.getElementById("curr").value || 0);
 
-         if(current < previous){
-            alert("Current reading can not be lower than the previous reading.");
-         return; }
+    if(!houseId || !current){
+        alert("House and current reading required");
+        return;
+    }
 
+    if(current < previous){
+        alert("Current reading cannot be lower than previous");
+        return;
+    }
 
-          fetch("../api/water_readings/submit_readings.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+    fetch("../api/water_readings/submit_readings.php",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json"},
         body: JSON.stringify({
             house_id: houseId,
-            tenant_id: tenantId,
             current_reading: current
         })
     })
     .then(res => res.json())
     .then(data => {
-        const msgDiv = document.getElementById("moveInMessage");
-        if (data.status === "success") {
-            msgDiv.innerHTML = `<span style="color:green">${data.message}</span>
-                                <div>Prorated charged: KES ${data.prorate_amount}</div>
-                                <div>Rent balance stored: KES ${data.rent_balance}</div>`;
-            document.getElementById("moveInForm").reset();
-            document.getElementById("prorate_amount").value = "";
-            document.getElementById("rentBalancePreview").innerHTML = "";
-            // optionally refresh house/tenant selects (you can add code to reload lists)
-        } else {
-            msgDiv.innerHTML = `<span style="color:red">${data.message}</span>`;
+
+        const msgDiv = document.getElementById("message");
+
+        if(data.status === "success"){
+
+            msgDiv.innerHTML =
+                `<span style="color:green">${data.message}</span>
+                 <div>Units used: ${data.units_used}</div>`;
+
+            document.getElementById("readings").reset();
+
+        }else{
+
+            msgDiv.innerHTML =
+                `<span style="color:red">${data.message}</span>`;
+
         }
+
     })
-    .catch(err => {
-        console.error("AJAX error:", err);
-    });
-
-
-    
+    .catch(err => console.error("Fetch error:",err));
 
 });
 </script>

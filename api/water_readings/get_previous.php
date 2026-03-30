@@ -13,26 +13,37 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'landlord') {
 }
 
 $house_id = $_GET['house_id'] ?? null;
-if (!$house_id) {
+
+if(!$house_id){
     echo json_encode(["status"=>"error","message"=>"Missing house id"]);
     exit;
 }
 
 $stmt = $conn->prepare("
-    SELECT previous_water_readings
-    FROM water_readings
-    WHERE id=? 
+SELECT current_reading
+FROM water_readings
+WHERE house_id = ?
+ORDER BY reading_date DESC
+LIMIT 1
 ");
-$stmt->bind_param("i", $house_id, $_SESSION['user_id']);
-$stmt->execute();
-$prev = $stmt->get_result()->fetch_assoc();
 
-if (!$house) {
-    echo json_encode(["status"=>"error","message"=>"House not found"]);
+$stmt->bind_param("i", $house_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if($result->num_rows == 0){
+
+    echo json_encode([
+        "status"=>"success",
+        "previous_water_readings"=>0
+    ]);
+
     exit;
 }
 
+$row = $result->fetch_assoc();
+
 echo json_encode([
-    "status" => "success",
-    "previous_water_readings" => $prev['previous_ water_readings']
+    "status"=>"success",
+    "previous_water_readings"=>$row['current_reading']
 ]);

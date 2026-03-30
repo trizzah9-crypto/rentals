@@ -60,7 +60,7 @@ if($data){
         $penalty = $rentData['penalty'];
         $days_late = $rentData['days_late'];
         $rent_amount = $rentData['rent_amount'];
-        $amount_paid = $rentData['total_paid'];
+        $amount_paid = $rentData['total_paid_this_cycle'];
         $credit = $rentData['credit']; // ADD THIS
 
         $total_due = $rent_amount + $penalty;

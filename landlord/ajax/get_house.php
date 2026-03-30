@@ -1,5 +1,5 @@
 <?php
-require "../config/db.php";
+require "../../config/db.php";
 
 $id = intval($_GET['id']);
 $sql = "SELECT * FROM houses WHERE id = $id LIMIT 1";

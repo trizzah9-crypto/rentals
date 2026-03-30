@@ -21,6 +21,7 @@ $location = $data['location'] ?? '';
 $rent_amount = $data['rent_amount'] ?? '';
 $due_day = $data['due_day'] ?? '';
 $late_interest_per_day = $data['late_interest_per_day'] ?? 0;
+$price_water = $data['price_water'] ?? '';
 
 // Validate input
 if (!$house_number || !$location || !$rent_amount || !$due_day) {
@@ -42,18 +43,19 @@ if (!$house_number || !$location || !$rent_amount || !$due_day) {
 // Insert house
 $stmt = $conn->prepare("
     INSERT INTO houses 
-    (landlord_id, house_number, location, rent_amount, due_day, late_interest_per_day, status) 
-    VALUES (?, ?, ?, ?, ?, ?, 'vacant')
+    (landlord_id, house_number, location, rent_amount, due_day, late_interest_per_day, status, unit_price_water) 
+    VALUES (?, ?, ?, ?, ?, ?, 'vacant', ?)
 ");
 
 $stmt->bind_param(
-    "issdid",
+    "issdidd",
     $_SESSION['user_id'],
     $house_number,
     $location,
     $rent_amount,
     $due_day,
-    $late_interest_per_day
+    $late_interest_per_day,
+    $price_water
 );
 
 

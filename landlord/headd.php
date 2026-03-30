@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'landlord') {
 }
 
 // Now you can safely show landlord dashboard
-echo "Welcome Landlord " . $_SESSION['name'];
+
 ?>
 
 <!DOCTYPE html>
@@ -164,40 +164,103 @@ echo "Welcome Landlord " . $_SESSION['name'];
         <div class="quixnav">
             <div class="quixnav-scroll">
                 <ul class="metismenu" id="menu">
-                    <li class="nav-label first">Menu</li>
-                   
-                    
-                    <li><a href="dashboard.php" aria-expanded="false"><i class="icon icon-globe-2"></i><span class="nav-text">Dashboard</span></a></li>
-                    
-
-                         <li class="nav-label">Manage Houses</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-form"></i><span class="nav-text">Adding and Analysis</span></a>
-                        <ul aria-expanded="false">
-                    <li><a href="house.php" aria-expanded="false"><i class="icon icon-globe-2"></i><span class="nav-text">Add houses</span></a></li>
-                    <li><a href="house.php" aria-expanded="false"><i class="icon icon-globe-2"></i><span class="nav-text">House list</span></a></li>
-                            
-                        </ul>
-                    </li>
-
-                     <li class="nav-label">Manage Tenants</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-form"></i><span class="nav-text">Moving in/out Tenants</span></a>
-                        <ul aria-expanded="false">
-                    <li><a href="tenancies.php" aria-expanded="false"><i class="icon icon-globe-2"></i><span class="nav-text">Move in Tenant</span></a></li>
-                    <li><a href="m_tenant.php" aria-expanded="false"><i class="icon icon-globe-2"></i><span class="nav-text">Move Out</span></a></li>
-                            
-                        </ul>
-                    </li>
-                   
+                    <!-- MAIN -->
+                   <li class="nav-label first">Main</li>
+                      <li>
+                            <a href="dashboard.php">
+                            <i class="icon-speedometer"></i>
+                             <span class="nav-text">Dashboard</span>
+                            </a>
+                            <a href="dashboards.php">
+                            <i class="icon-speedometer"></i>
+                             <span class="nav-text">Dashboards</span>
+                            </a>
+                     </li>
                   
-                   <li class="nav-label">Extras</li>
-                    <li><a href="dashboards.php" aria-expanded="false"><i class="icon icon-globe-2"></i><span class="nav-text">Testing</span></a></li>
-                    <li><a href="test.php" aria-expanded="false"><i class="icon icon-globe-2"></i><span class="nav-text">Test</span></a></li>
-                    <li><a href="water_readings.php" aria-expanded="false"><i class="icon icon-globe-2"></i><span class="nav-text">Water Readings</span></a></li>
-                    <li><a href="approve_payments.php" aria-expanded="false"><i class="icon icon-globe-2"></i><span class="nav-text">Wid</span></a></li>
-                    <li><a href="logout.php" aria-expanded="false"><i class="icon icon-globe-2"></i><span class="nav-text">Logout</span></a></li>
+                       <!-- HOUSES -->
+                <li class="nav-label">Property Management</li>
+                <li>
+                    <a class="has-arrow" href="javascript:void()">
+                        <i class="icon-home"></i>
+                        <span class="nav-text">Houses</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="house.php">
+                                <i class="icon-plus"></i> Add House
+                            </a>
+                        </li>
+                        <li>
+                            <a href="house_list.php">
+                                <i class="icon-list"></i> House List
+                            </a>
+                        </li>
+                    </ul>
+                  </li>
+
+                                             <!-- TENANTS -->
+                              <li class="nav-label">Tenant Management</li>
+                              <li>
+                                  <a class="has-arrow" href="javascript:void()">
+                                      <i class="icon-people"></i>
+                                      <span class="nav-text">Tenants</span>
+                                  </a>
+                                  <ul>
+                                      <li>
+                                          <a href="tenancies.php">
+                                              <i class="icon-login"></i> Move In Tenant
+                                          </a>
+                                      </li>
+                                      <li>
+                                          <a href="m_tenant.php">
+                                              <i class="icon-logout"></i> Move Out Tenant
+                                          </a>
+                                      </li>
+                                  </ul>
+                              </li>
+
                    
+
+
+
+    <!-- PAYMENTS -->
+                        <li class="nav-label">Payments & Billing</li>
+                        <li>
+                            <a href="approve_payments.php">
+                                <i class="icon-credit-card"></i>
+                                <span class="nav-text">Approve Payments</span>
+                            </a>
+                        </li>
+
+
+                          <!-- UTILITIES -->
+                          <li class="nav-label">Utilities</li>
+                          <li>
+                              <a href="water_readings.php">
+                                  <i class="icon-drop"></i>
+                                  <span class="nav-text">Water Readings</span>
+                              </a>
+                          </li>
+
+                           <!-- SYSTEM / EXTRA -->
+                               <li class="nav-label">System</li>
+                               <li>
+                                   <a href="test.php">
+                                       <i class="icon-wrench"></i>
+                                       <span class="nav-text">System Test</span>
+                                   </a>
+                               </li>
+                           
+                                 <!-- LOGOUT -->
+                            <li class="nav-label">Account</li>
+                            <li>
+                                <a href="logout.php">
+                                    <i class="icon-logout"></i>
+                                    <span class="nav-text">Logout</span>
+                                </a>
+                            </li>
+
+                     
                    
                 </ul>
             </div>

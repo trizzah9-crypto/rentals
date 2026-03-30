@@ -11,6 +11,7 @@ document.getElementById("addHouseForm").addEventListener("submit", function(e) {
             rent_amount: document.getElementById("rent_amount").value,
             due_day: document.getElementById("due_day").value,
             late_interest_per_day: document.getElementById("late_interest_per_day").value,
+            price_water: document.getElementById("price_water").value,
                     
         })
     })
@@ -27,6 +28,7 @@ document.getElementById("addHouseForm").addEventListener("submit", function(e) {
     .catch(err => console.error("AJAX error:", err));
 });
 
+console.log(document.getElementById("price_water").value);
 
 
 // ADD TENANT
